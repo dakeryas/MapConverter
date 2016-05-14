@@ -38,7 +38,7 @@ int main(int argc, char* argv[]){
   bpo::options_description optionDescription("MapConverter usage");
   optionDescription.add_options()
   ("help,h", "Display this help message")
-  ("target,t", bpo::value<boost::filesystem::path>(&targetPath)->required(), "Path of the text file containing the event numbers of the candidates")
+  ("target", bpo::value<boost::filesystem::path>(&targetPath)->required(), "Path of the text file containing the event numbers of the candidates")
   ("output,o", bpo::value<boost::filesystem::path>(&outputPath)->required(), "Output file where to save the archive with the map of candidates");
 
   bpo::positional_options_description positionalOptions;//to use arguments without "--"
