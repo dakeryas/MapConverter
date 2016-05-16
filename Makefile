@@ -6,6 +6,7 @@ MAIN = MapConverter.cpp
 EXECUTABLE = $(patsubst %.cpp,%, $(MAIN))
 
 MAKEFLAGS := -j$(shell nproc)
+INCLUDEFLAGS := -I. -I$(IDIR)
 INCLUDEFLAGS += -I$(APPLICATIONS_PATH)
 INCLUDEFLAGS += -I$(BOOST_PATH)/include
 OPTFLAGS := -Wall -Wextra -O3 -MMD -MP -std=c++14
