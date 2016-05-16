@@ -1,35 +1,8 @@
-#include <fstream>
+#include <iostream>
 #include "boost/program_options.hpp"
-#include "boost/filesystem.hpp"
-#include "cereal/archives/binary.hpp"
-#include "cereal/types/unordered_map.hpp"
-#include "cereal/types/vector.hpp"
+#include "Converter.hpp"
 
 namespace bpo = boost::program_options;
-
-namespace MapConverter{
-
-  void convertToMap(const boost::filesystem::path& targetPath, const boost::filesystem::path& outputPath){
-    
-    std::ifstream inputStream(targetPath.string());
-    
-    std::unordered_map<unsigned, std::vector<unsigned>> candidatesMap;
-    
-    unsigned runNumber, eventNumber;
-    while(inputStream>>runNumber){
-      
-      inputStream>>eventNumber;
-      candidatesMap[runNumber].emplace_back(eventNumber);
-      
-    }
-    
-    std::ofstream outputStream(outputPath.string(), std::ios::binary);
-    cereal::BinaryOutputArchive outputArchive(outputStream);
-    outputArchive(candidatesMap);
-    
-  }
-
-}
 
 int main(int argc, char* argv[]){
   
@@ -39,7 +12,8 @@ int main(int argc, char* argv[]){
   optionDescription.add_options()
   ("help,h", "Display this help message")
   ("target", bpo::value<boost::filesystem::path>(&targetPath)->required(), "Path of the text file containing the event numbers of the candidates")
-  ("output,o", bpo::value<boost::filesystem::path>(&outputPath)->required(), "Output file where to save the archive with the map of candidates");
+  ("output,o", bpo::value<boost::filesystem::path>(&outputPath)->required(), "Output file where to save the archive with the map of candidates")
+  ("reverse", "Reverse mode: convert archive to text file");
 
   bpo::positional_options_description positionalOptions;//to use arguments without "--"
   positionalOptions.add("target", 1);
@@ -74,7 +48,8 @@ int main(int argc, char* argv[]){
   }
   else{
     
-    MapConverter::convertToMap(targetPath, outputPath);
+    if(arguments.count("reverse")) MapConverter::convertToText(targetPath, outputPath);
+    else MapConverter::convertToArchive(targetPath, outputPath);
     
   }
   
