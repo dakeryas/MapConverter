@@ -61,14 +61,14 @@ int main(int argc, char* argv[]){
   }
   catch(bpo::error& e){
     
-    std::cout<<e.what()<<std::endl;
+    std::cerr<<e.what()<<std::endl;
     return 1;
     
   }
   
   if(!boost::filesystem::is_regular_file(targetPath)){
     
-    std::cout<<"Error: "<<targetPath<<" is not a regular file"<<std::endl;
+    std::cerr<<"Error: "<<targetPath<<" is not a regular file"<<std::endl;
     return 1;
     
   }
